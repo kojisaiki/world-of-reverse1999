@@ -1,0 +1,6 @@
+@use "./base.scss";
+
+// トップページ（index.md）の本文下グラフの表示高さを広げる
+.page-footer .graph > .graph-outer {
+  height: 380px;
+}
