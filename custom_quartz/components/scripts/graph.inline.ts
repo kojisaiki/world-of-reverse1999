@@ -208,6 +208,14 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
     const isCurrent = d.id === slug
     if (isCurrent) {
       return computedStyleMap["--secondary"]
+    } else if (d.id.startsWith("character/")) {
+      return "#c678dd" // 登場人物・関係者: パープル系
+    } else if (d.id.startsWith("story/main/")) {
+      return "#61afef" // メインストーリー: ブルー系
+    } else if (d.id.startsWith("story/event/")) {
+      return "#e5c07b" // イベントストーリー: アンバー・ゴールド系
+    } else if (d.id.startsWith("story/")) {
+      return "#61afef" // ストーリー全般: ブルー系
     } else if (d.id.startsWith("event/")) {
       return "#e06c75" // イベント・ストーム: 赤・コーラル系
     } else if (d.id.startsWith("place/")) {
