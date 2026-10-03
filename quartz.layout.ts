@@ -41,7 +41,31 @@ export const defaultContentPageLayout: PageLayout = {
     Component.Explorer(),
   ],
   right: [
-    Component.Graph(),
+    Component.ConditionalRender({
+      component: Component.Graph({
+        localGraph: {
+          showTags: false,
+          linkDistance: 90,     // ノード同士の距離を広げる（デフォルト30）
+          repelForce: 1.5,      // 反発力を強めて重なりを防ぐ（デフォルト0.5）
+          centerForce: 0.08,    // 中心にギュッと引き寄せる力を弱める（デフォルト0.3）
+          focusOnHover: true,   // ホバーしたノードの繋がりをハイライト
+          scale: 1.1,
+        },
+        globalGraph: {
+          showTags: false,
+          depth: 1,             // 拡大時も現在のページに繋がったノードのみを表示
+          linkDistance: 280,    // ★大画面に合わせてノード間の距離を大幅拡大（画面端まで広げる）
+          repelForce: 4.0,      // ★反発力を強めて画面全体に展開
+          centerForce: 0.03,    // ★中心に集まる引力を最小限に抑制
+          fontSize: 1.1,        // ★大画面で見やすいフォントサイズ
+          opacityScale: 3.5,    // ★拡大時に最初からラベル文字がクッキリ読めるようにする
+          scale: 1.2,
+          focusOnHover: true,
+          enableRadial: false,
+        },
+      }),
+      condition: (page) => page.fileData.slug !== "index",
+    }),
     Component.DesktopOnly(Component.TableOfContents()),
     Component.Backlinks(),
   ],
