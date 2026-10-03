@@ -42,7 +42,7 @@ jobs:
             --exclude='quartz.config.ts' \
             --exclude='quartz.layout.ts' \
             --exclude='README.md' \
-            --exclude='LICENSE.txt' \
+            --exclude='AGENTS.md' \
             vault/ quartz/content/
 
           # Apply custom Quartz configurations if present
