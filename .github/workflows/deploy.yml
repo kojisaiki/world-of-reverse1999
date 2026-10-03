@@ -43,6 +43,7 @@ jobs:
             --exclude='quartz.layout.ts' \
             --exclude='README.md' \
             --exclude='AGENTS.md' \
+            --exclude='custom_quartz' \
             vault/ quartz/content/
 
           # Apply custom Quartz configurations if present
@@ -51,6 +52,11 @@ jobs:
           fi
           if [ -f vault/quartz.layout.ts ]; then
             cp vault/quartz.layout.ts quartz/quartz.layout.ts
+          fi
+
+          # Apply custom Quartz overrides (components, scripts, styles) if present
+          if [ -d vault/custom_quartz ]; then
+            cp -r vault/custom_quartz/* quartz/quartz/
           fi
 
       - name: Install dependencies & Build
