@@ -90,12 +90,15 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
   } = JSON.parse(graph.dataset["cfg"]!) as D3Config
 
   const data: Map<SimpleSlug, ContentDetails> = new Map(
-    Object.entries<ContentDetails>(await fetchData).map(([k, v]) => [
-      simplifySlug(k as FullSlug),
-      v,
-    ]),
+    Object.entries<ContentDetails>(await fetchData)
+      .filter(([k]) => k !== "index" && !k.endsWith("/index"))
+      .map(([k, v]) => [
+        simplifySlug(k as FullSlug),
+        v,
+      ]),
   )
   data.delete("index" as SimpleSlug)
+  data.delete("/" as SimpleSlug)
   const links: SimpleLinkData[] = []
   const tags: SimpleSlug[] = []
   const validLinks = new Set(data.keys())
@@ -144,14 +147,19 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
     if (showTags) tags.forEach((tag) => neighbourhood.add(tag))
   }
 
-  const nodes = [...neighbourhood].map((url) => {
-    const text = url.startsWith("tags/") ? "#" + url.substring(5) : (data.get(url)?.title ?? url)
-    return {
-      id: url,
-      text,
-      tags: data.get(url)?.tags ?? [],
-    }
-  })
+  neighbourhood.delete("index" as SimpleSlug)
+  neighbourhood.delete("/" as SimpleSlug)
+
+  const nodes = [...neighbourhood]
+    .filter((url) => url !== ("index" as SimpleSlug) && url !== ("/" as SimpleSlug))
+    .map((url) => {
+      const text = url.startsWith("tags/") ? "#" + url.substring(5) : (data.get(url)?.title ?? url)
+      return {
+        id: url,
+        text,
+        tags: data.get(url)?.tags ?? [],
+      }
+    })
   const graphData: { nodes: NodeData[]; links: LinkData[] } = {
     nodes,
     links: links
@@ -162,8 +170,9 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
       })),
   }
 
-  const width = graph.offsetWidth
-  const height = Math.max(graph.offsetHeight, 250)
+  const parent = graph.parentElement
+  const width = graph.offsetWidth || parent?.offsetWidth || 400
+  const height = Math.max(graph.offsetHeight, parent?.offsetHeight || 0, 250)
 
   // we virtualize the simulation and use pixi to actually render it
   const simulation: Simulation<NodeData, LinkData> = forceSimulation<NodeData>(graphData.nodes)
@@ -367,6 +376,9 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
     eventMode: "static",
   })
   graph.appendChild(app.canvas)
+  app.canvas.style.display = "block"
+  app.canvas.style.width = "100%"
+  app.canvas.style.height = "100%"
 
   const stage = app.stage
   stage.interactive = false
