@@ -22,6 +22,8 @@ Obsidian Vault として管理され、GitHub Pages 上で [Quartz v4](https://q
 
 - **UTTU（リバース：1999 データベース）**: [https://uttu.merui.net/](https://uttu.merui.net/)
   - ゲーム内テキスト、ストーリー台詞、キャラクター・用語・アイテムアーカイブ等のエビデンス参照
+- **リバース：1999攻略Wiki**: [https://reverse1999.wikiru.jp/](https://reverse1999.wikiru.jp/)
+  - 日本語版イベント履歴、各バージョン情報、公式用語・タイトルの照合
 - **『リバース：1999』ゲーム本編（BLUEPOCH）**
   - メインストーリー、イベントストーリー、キャラクタープロファイル、図鑑等
 
