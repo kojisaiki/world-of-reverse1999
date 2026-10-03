@@ -3,22 +3,63 @@ name: Deploy Quartz Site
 on:
   push:
     branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - name: Checkout Vault Content
+        uses: actions/checkout@v4
         with:
-          node-version: 24
-      - name: Install dependencies
-        run: npm install
-      - name: Build Quartz
-        run: npx quartz build
+          path: vault
+
+      - name: Checkout Quartz Engine
+        uses: actions/checkout@v4
+        with:
+          repository: jackyzha0/quartz
+          path: quartz
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Prepare Content & Config
+        run: |
+          # Clear default sample content in Quartz
+          rm -rf quartz/content/*
+
+          # Sync Vault contents to Quartz content directory
+          # Exclude git metadata, workflows, configuration files, and root non-content docs
+          rsync -av \
+            --exclude='.git*' \
+            --exclude='.github' \
+            --exclude='quartz.config.ts' \
+            --exclude='quartz.layout.ts' \
+            --exclude='README.md' \
+            --exclude='LICENSE.txt' \
+            vault/ quartz/content/
+
+          # Apply custom Quartz configurations if present
+          if [ -f vault/quartz.config.ts ]; then
+            cp vault/quartz.config.ts quartz/quartz.config.ts
+          fi
+          if [ -f vault/quartz.layout.ts ]; then
+            cp vault/quartz.layout.ts quartz/quartz.layout.ts
+          fi
+
+      - name: Install dependencies & Build
+        working-directory: quartz
+        run: |
+          npm ci
+          npx quartz build
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public
+          publish_dir: quartz/public
