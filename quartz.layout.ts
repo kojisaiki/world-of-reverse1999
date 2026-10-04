@@ -41,8 +41,8 @@ export const sharedPageComponents: SharedLayout = {
   ],
   footer: Component.Footer({
     links: {
-      GitHub: "https://github.com/jackyzha0/quartz",
-      "Discord Community": "https://discord.gg/cRFFHYye7t",
+      "GitHub リポジトリ": "https://github.com/kojisaiki/world-of-reverse1999",
+      "編集・貢献ガイド": "https://kojisaiki.github.io/world-of-reverse1999/contribution",
     },
   }),
 }
