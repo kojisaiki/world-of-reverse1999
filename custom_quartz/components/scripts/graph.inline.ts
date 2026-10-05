@@ -602,6 +602,20 @@ document.addEventListener("nav", async (e: CustomEventMap["nav"]) => {
   const slug = e.detail.url
   addToVisited(simplifySlug(slug))
 
+  // トップページ (index) の場合、Graph View を説明文の下、主要カテゴリーの直前に移動
+  if (slug === "index" || slug === "") {
+    const centerGraph = document.querySelector(".center .graph")
+    const categoryHeading = document.getElementById("主要カテゴリー")
+    if (centerGraph && categoryHeading) {
+      const prev = categoryHeading.previousElementSibling
+      if (prev && prev.tagName === "HR") {
+        prev.parentNode?.insertBefore(centerGraph, prev)
+      } else {
+        categoryHeading.parentNode?.insertBefore(centerGraph, categoryHeading)
+      }
+    }
+  }
+
   async function renderLocalGraph() {
     cleanupLocalGraphs()
     const localGraphContainers = document.getElementsByClassName("graph-container")
