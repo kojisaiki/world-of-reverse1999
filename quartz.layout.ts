@@ -6,7 +6,23 @@ import GithubSource from "./quartz/components/GithubSource"
 export const sharedPageComponents: SharedLayout = {
   head: Component.Head(),
   header: [],
-  afterBody: [
+  afterBody: [],
+  footer: Component.Footer({
+    links: {
+      "GitHub リポジトリ": "https://github.com/kojisaiki/world-of-reverse1999",
+      "編集・貢献ガイド": "https://kojisaiki.github.io/world-of-reverse1999/contribution",
+    },
+  }),
+}
+
+// components for pages that display a single page (e.g. a single note)
+export const defaultContentPageLayout: PageLayout = {
+  beforeBody: [
+    Component.ConditionalRender({
+      component: Component.Breadcrumbs(),
+      condition: (page) => page.fileData.slug !== "index",
+    }),
+    Component.ArticleTitle(),
     Component.ConditionalRender({
       component: Component.Graph({
         localGraph: {
@@ -38,23 +54,6 @@ export const sharedPageComponents: SharedLayout = {
       }),
       condition: (page) => page.fileData.slug === "index",
     }),
-  ],
-  footer: Component.Footer({
-    links: {
-      "GitHub リポジトリ": "https://github.com/kojisaiki/world-of-reverse1999",
-      "編集・貢献ガイド": "https://kojisaiki.github.io/world-of-reverse1999/contribution",
-    },
-  }),
-}
-
-// components for pages that display a single page (e.g. a single note)
-export const defaultContentPageLayout: PageLayout = {
-  beforeBody: [
-    Component.ConditionalRender({
-      component: Component.Breadcrumbs(),
-      condition: (page) => page.fileData.slug !== "index",
-    }),
-    Component.ArticleTitle(),
     Component.ContentMeta(),
     GithubSource(),
     Component.TagList(),
