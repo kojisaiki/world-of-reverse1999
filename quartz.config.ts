@@ -1,5 +1,6 @@
 import { QuartzConfig } from "./quartz/cfg"
 import * as Plugin from "./quartz/plugins"
+import { ReverseOgImages } from "./quartz/plugins/emitters/reverseOgImage"
 
 /**
  * Quartz 4 Configuration
@@ -89,7 +90,8 @@ const config: QuartzConfig = {
       Plugin.Favicon(),
       Plugin.NotFoundPage(),
       // Comment out CustomOgImages to speed up build time
-      Plugin.CustomOgImages(),
+      // 日本語フォント対応 + 独自デザインの OGP 画像 (custom_quartz/plugins/emitters/reverseOgImage.tsx)
+      ReverseOgImages(),
     ],
   },
 }
