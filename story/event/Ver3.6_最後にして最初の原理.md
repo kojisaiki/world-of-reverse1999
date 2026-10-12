@@ -23,4 +23,5 @@ tags:
 ## 関連リンク
 - 目次: [[イベントストーリー一覧]](index.md)
 - 前のイベント: [[Ver.3.5「シウコアトル・クラブ」]](Ver3.5_シウコアトル・クラブ.md)
+- 次のイベント: [[Ver.3.8「世紀末スケール」]](Ver3.8_世紀末スケール.md)
 - 外部アーカイブ: [UTTU - Last and First Principles](https://uttu.merui.net/story/en/event/3_6)
