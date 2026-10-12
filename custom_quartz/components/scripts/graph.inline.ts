@@ -218,8 +218,8 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
       return "#61afef" // ストーリー全般: ブルー系
     } else if (d.id.startsWith("event/")) {
       return "#e06c75" // イベント・ストーム: 赤・コーラル系
-    } else if (d.id.startsWith("place/")) {
-      return "#98c379" // 舞台・場所: グリーン系
+    } else if (d.id.startsWith("term/")) {
+      return "#98c379" // 用語・組織・舞台: グリーン系
     } else if (visited.has(d.id) || d.id.startsWith("tags/")) {
       return computedStyleMap["--tertiary"]
     } else {
