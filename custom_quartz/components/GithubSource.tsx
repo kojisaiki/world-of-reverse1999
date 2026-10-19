@@ -4,6 +4,7 @@ import { classNames } from "../util/lang"
 interface GithubSourceOptions {
   repoUrl: string
   branch: string
+  siteUrl: string
   viewText: string
   editText: string
   showView: boolean
@@ -13,6 +14,7 @@ interface GithubSourceOptions {
 const defaultOptions: GithubSourceOptions = {
   repoUrl: "https://github.com/kojisaiki/world-of-reverse1999",
   branch: "main",
+  siteUrl: "https://kojisaiki.github.io/world-of-reverse1999",
   viewText: "ソース確認",
   editText: "編集依頼",
   showView: true,
@@ -36,9 +38,21 @@ export default ((opts?: Partial<GithubSourceOptions>) => {
     const normalizedPath = rawPath.replace(/\\/g, "/")
     const encodedPath = normalizedPath.split("/").map(encodeURIComponent).join("/")
 
+    // Public page URLs use the Markdown path without its extension. Folder index
+    // pages resolve to the folder URL, while the root index resolves to the site URL.
+    const pagePath = (fileData.slug ?? normalizedPath.replace(/\.md$/i, "")).replace(/(^|\/)index$/i, "$1")
+    const encodedPagePath = pagePath
+      .split("/")
+      .filter(Boolean)
+      .map(encodeURIComponent)
+      .join("/")
+
     const baseUrl = options.repoUrl.replace(/\/$/, "")
     const blobUrl = `${baseUrl}/blob/${options.branch}/${encodedPath}`
-    const editUrl = `${baseUrl}/edit/${options.branch}/${encodedPath}`
+    const pageUrl = `${options.siteUrl.replace(/\/$/, "")}/${encodedPagePath}/`
+    const issueUrl = new URL(`${baseUrl}/issues/new`)
+    issueUrl.searchParams.set("template", "page-edit.yml")
+    issueUrl.searchParams.set("page_url", pageUrl)
 
     return (
       <div class={classNames(displayClass, "github-source")}>
@@ -85,11 +99,11 @@ export default ((opts?: Partial<GithubSourceOptions>) => {
         {options.showView && options.showEdit && <span class="github-source-separator">/</span>}
         {options.showEdit && (
           <a
-            href={editUrl}
+            href={issueUrl.toString()}
             target="_blank"
             rel="noopener noreferrer"
             class="github-source-link github-source-edit"
-            title="GitHubでこのページの編集・Pull Request作成"
+            title="このページの修正依頼をGitHub Issueで作成"
           >
             {options.editText}
             <svg

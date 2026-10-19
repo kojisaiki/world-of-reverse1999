@@ -1,0 +1,44 @@
+name: ページの修正依頼
+description: サイト内のページの誤りや不足を報告します。
+title: "[ページ修正] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ページの内容を確認し、気づいた点を教えてください。分かる範囲で記入すれば大丈夫です。
+
+  - type: input
+    id: page_url
+    attributes:
+      label: 対象ページ
+      description: 修正したいページのURLです。ページ上の「編集依頼」から開いた場合は入力済みです。
+      placeholder: https://kojisaiki.github.io/world-of-reverse1999/...
+    validations:
+      required: true
+
+  - type: textarea
+    id: correction
+    attributes:
+      label: 修正してほしい内容
+      description: 誤りや不足している情報と、どのように直すとよいかを教えてください。
+      placeholder: |
+        例：〇〇の説明にある年代が違います。正しくは△△年です。
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: 根拠や出典
+      description: ストーリーの章・イベント名、ゲーム内の記述、参考資料などがあれば記入してください。
+      placeholder: 例：第〇章の会話、イベント「〇〇」のストーリー
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: 補足
+      description: ほかに伝えておきたいことがあれば記入してください。
+    validations:
+      required: false
