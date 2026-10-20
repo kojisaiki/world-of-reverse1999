@@ -24,7 +24,8 @@ export default ((opts?: Partial<ShareOptions>) => {
       .filter(Boolean)
       .map(encodeURIComponent)
       .join("/")
-    const pageUrl = `${options.siteUrl.replace(/\/$/, "")}/${encodedPagePath}/`
+    const siteUrl = options.siteUrl.replace(/\/$/, "")
+    const pageUrl = encodedPagePath ? `${siteUrl}/${encodedPagePath}/` : `${siteUrl}/`
     const title = fileData.frontmatter?.title ?? slug.split("/").pop() ?? "World of Reverse:1999"
     const text = [options.shareText || title, ...options.hashtags.map((tag) => `#${tag}`)].join(" ")
     const shareUrl = new URL("https://twitter.com/intent/tweet")
