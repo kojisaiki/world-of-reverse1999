@@ -1,6 +1,7 @@
 import { PageLayout, SharedLayout } from "./quartz/cfg"
 import * as Component from "./quartz/components"
 import GithubSource from "./quartz/components/GithubSource"
+import Share from "./custom_quartz/components/Share"
 
 // components shared across all pages
 export const sharedPageComponents: SharedLayout = {
@@ -56,6 +57,7 @@ export const defaultContentPageLayout: PageLayout = {
     }),
     Component.ContentMeta(),
     GithubSource(),
+    Share(),
     Component.TagList(),
   ],
   left: [
@@ -111,6 +113,7 @@ export const defaultListPageLayout: PageLayout = {
     Component.ArticleTitle(),
     Component.ContentMeta(),
     GithubSource(),
+    Share(),
   ],
   left: [
     Component.PageTitle(),
